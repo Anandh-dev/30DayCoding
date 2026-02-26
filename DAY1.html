@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Expense Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    input, button {
+      margin: 5px;
+      padding: 8px;
+    }
+    #expense-list {
+      margin-top: 20px;
+    }
+    .highest {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Daily Expense Tracker</h2>
+  
+  <label>Description:</label>
+  <input type="text" id="desc" placeholder="e.g. Groceries">
+  
+  <label>Amount:</label>
+  <input type="number" id="amount" placeholder="e.g. 500">
+  
+  <button onclick="addExpense()">Add Expense</button>
+  
+  <div id="expense-list"></div>
+  <h3 id="total"></h3>
+  <h3 id="highest"></h3>
+  
+  <script>
+    let expenses = [];
+
+    function addExpense() {
+      let desc = document.getElementById("desc").value;
+      let amount = parseFloat(document.getElementById("amount").value);
+
+      if (desc && amount) {
+        expenses.push({ description: desc, amount: amount });
+        document.getElementById("desc").value = "";
+        document.getElementById("amount").value = "";
+        showExpenses();
+      } else {
+        alert("Please enter both description and amount!");
+      }
+    }
+
+    function showExpenses() {
+      let listDiv = document.getElementById("expense-list");
+      listDiv.innerHTML = "<h3>Your Expenses:</h3>";
+      
+      expenses.forEach(exp => {
+        listDiv.innerHTML += `<p>${exp.description}: ₹${exp.amount}</p>`;
+      });
+
+      document.getElementById("total").innerText = "Total Expenses: ₹" + getTotalExpenses();
+      
+      let highest = getHighestExpense();
+      document.getElementById("highest").innerHTML = 
+        "Highest Expense: <span class='highest'>" + highest.description + " - ₹" + highest.amount + "</span>";
+    }
+
+    function getTotalExpenses() {
+      return expenses.reduce((total, exp) => total + exp.amount, 0);
+    }
+
+    function getHighestExpense() {
+      return expenses.reduce((max, exp) => exp.amount > max.amount ? exp : max, expenses[0]);
+    }
+  </script>
+</body>
+</html>
