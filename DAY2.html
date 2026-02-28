@@ -68,7 +68,6 @@
       }
     }
 
-    // 🔧 Utility Functions
     function getTotal() {
       return expenses.reduce((total, exp) => total + exp.amount, 0);
     }
@@ -81,7 +80,6 @@
       return expenses.filter(exp => exp.category.toLowerCase() === category.toLowerCase());
     }
 
-    // Display
     function showExpenses() {
       let listDiv = document.getElementById("expense-list");
       listDiv.innerHTML = "<h3>Your Expenses:</h3>";
