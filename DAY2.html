@@ -42,6 +42,7 @@
     <option value="Bills">Bills</option>
     <option value="Other">Other</option>
   </select>
+  <button onclick="applyFilter()">Filter</button>
 
   <button onclick="addExpense()">Add Expense</button>
 
@@ -76,10 +77,27 @@
       return expenses.reduce((max, exp) => exp.amount > max.amount ? exp : max, expenses[0]);
     }
 
-    function filterByCategory(category) {
+
+
+    function applyFilter() {
+  let category = document.getElementById("category").value;
+  let listDiv = document.getElementById("expense-list");
+
+  if (category) {
+    let filtered = filterByCategory(category);
+    listDiv.innerHTML = `<h3>${category} Expenses:</h3>`;
+    filtered.forEach(exp => {
+      listDiv.innerHTML += `<p>${exp.description} (${exp.category}): ₹${exp.amount}</p>`;
+    });
+  } else {
+    showExpenses(); // show all if no category selected
+  }
+}
+
+      function filterByCategory(category) {
       return expenses.filter(exp => exp.category.toLowerCase() === category.toLowerCase());
     }
-
+    
     function showExpenses() {
       let listDiv = document.getElementById("expense-list");
       listDiv.innerHTML = "<h3>Your Expenses:</h3>";
