@@ -1,0 +1,19 @@
+{
+  "name": "my_cli",
+  "version": "1.0.0",
+  "description": "my first command line application",
+  "keywords": [
+    "pooak"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "30daycoding"
+  },
+  "license": "ISC",
+  "author": "anandh",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "stat"
+  }
+}
