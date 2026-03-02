@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Book System</title>
+  <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+    .top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  justify-content: center;
+  margin: 10px;
+    } 
+    .button_container{
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+  </style>
+</head>
+<body>
+    <div class="top">
+  <h1>Contact Book</h1>
+
+  <label>Name:</label>
+  <input type="text" id="name" placeholder="e.g. John Doe">
+
+  <label>Number:</label>
+  <input type="text" id="number" placeholder="e.g. 9876543210">
+  </div>
+    <div class="button_container">
+  <button class="bt1" onclick="addContact()" style="height: 32px; background-color: greenyellow; border: 2px solid black; padding: 5px; border-radius: 7px; cursor: pointer;" >Add Contact</button>
+  <button id="bt2" onclick="searchContact()" style="height: 32px; background-color: aquamarine; border: 2px solid black; padding: 5px; border-radius: 7px; cursor: pointer;">Search by Name</button>
+  <button id="bt3" onclick="updateContact()" style="height: 32px; background-color: darkgreen; border: 2px solid black; padding: 5px; border-radius: 7px; cursor: pointer; ">Update Number</button>
+    </div>
+    
+  <div id="output"></div>
+
+  <script>
+    // Object as HashMap (key = name, value = number)
+    let contacts = {};
+
+    // Add contact (prevent duplicates)
+    function addContact() {
+      let name = document.getElementById("name").value.trim();
+      let number = document.getElementById("number").value.trim();
+      let output = document.getElementById("output");
+
+      if (!name || !number) {
+        output.innerText = "Please enter both name and number.";
+        return;
+      }
+
+      if (contacts[name]) {
+        output.innerText = "Duplicate entry! Contact already exists.";
+      } else {
+        contacts[name] = number;
+        output.innerText = `Added: ${name} - ${number}`;
+      }
+    }
+
+    // Search by name
+    function searchContact() {
+      let name = document.getElementById("name").value.trim();
+      let output = document.getElementById("output");
+
+      if (contacts[name]) {
+        output.innerText = `Found: ${name} - ${contacts[name]}`;
+      } else {
+        output.innerText = "Contact not found.";
+      }
+    }
+
+    // Update number
+    function updateContact() {
+      let name = document.getElementById("name").value.trim();
+      let number = document.getElementById("number").value.trim();
+      let output = document.getElementById("output");
+
+      if (contacts[name]) {
+        contacts[name] = number;
+        output.innerText = `Updated: ${name} - ${number}`;
+      } else {
+        output.innerText = "Contact not found. Cannot update.";
+      }
+    }
+  </script>
+</body>
+</html>
