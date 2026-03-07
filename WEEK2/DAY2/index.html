@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+</head>
+<body>
+  <h1>Users</h1>
+  <ul id="userList"></ul>
+
+  <h2>Add User</h2>
+  <form id="userForm">
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="number" id="age" placeholder="Age" required>
+    <button type="submit">Add</button>
+  </form>
+
+  <h2 id="result"></h2>
+
+  <script>
+    const API_URL = 'http://localhost:3000/users';
+
+    // Load users
+    function loadUsers() {
+      fetch(API_URL)
+        .then(res => res.json())
+        .then(users => {
+          const list = document.getElementById('userList');
+          list.innerHTML = '';
+          users.forEach(user => {
+            const li = document.createElement('li');
+            li.textContent = `${user.name} (Age: ${user.age})`;
+
+            // Edit button
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Edit';
+            editBtn.onclick = () => editUser(user.id, user.name, user.age);
+
+            // Delete button
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'Delete';
+            delBtn.onclick = () => deleteUser(user.id);
+
+            li.appendChild(editBtn);
+            li.appendChild(delBtn);
+            list.appendChild(li);
+          });
+        });
+    }
+
+    // Add user
+    document.getElementById('userForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const age = document.getElementById('age').value;
+
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, age })
+      }).then(() => loadUsers());
+    });
+
+    // Edit user
+    function editUser(id, currentName, currentAge) {
+      const name = prompt('Enter new name:', currentName);
+      const age = prompt('Enter new age:', currentAge);
+
+      if (name && age) {
+        fetch(`${API_URL}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, age })
+        }).then(() => loadUsers());
+      }
+    }
+
+    // Delete user
+    function deleteUser(id) {
+      fetch(`${API_URL}/${id}`, { method: 'DELETE' })
+        .then(() => loadUsers());
+    }
+
+    // Initial load
+    loadUsers();
+  </script>
+  
+</body>
+</html>
