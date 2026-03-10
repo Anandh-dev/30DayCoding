@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users Pagination</title>
+</head>
+<body>
+  <h1>User List</h1>
+  <ul id="userList"></ul>
+  <button id="loadMore">Load More</button>
+
+  <script>
+    let lastId = 0;
+
+    async function loadUsers() {
+      const res = await fetch(`http://localhost:3000/users?lastId=${lastId}&limit=50`);
+      const users = await res.json();
+
+      const list = document.getElementById('userList');
+      users.forEach(u => {
+        const li = document.createElement('li');
+        li.textContent = `${u.id}: ${u.name} (${u.age} years) - ${u.email}`;
+        list.appendChild(li);
+      });
+
+      if (users.length > 0) {
+        lastId = users[users.length - 1].id;
+      }
+    }
+
+    document.getElementById('loadMore').addEventListener('click', loadUsers);
+
+    // Initial load
+    loadUsers();
+  </script>
+</body>
+</html>
